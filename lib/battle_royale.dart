@@ -19,29 +19,32 @@ class _BattleRoyaleState extends State<BattleRoyale> {
   List deadUsers = [];
   List aliveUsers = [];
 
+  Future<void> getData() async {
+    var snap = await clubs.doc("battleroyale").get();
+    Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
+    users = data['users'];
+    aliveUsers = users;
+    phrases = data['phrases'];
+    weapons = data['weapons'];
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<DocumentSnapshot>(
-        future: clubs.doc("battleroyale").get(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            Map<String, dynamic> data =
-                snapshot.data!.data() as Map<String, dynamic>;
-            users = data['users'];
-            aliveUsers = users;
-            phrases = data['phrases'];
-            weapons = data['weapons'];
-          }
-          return Column(
-            children: [
-              SingleChildScrollView(
-                child: _buildLogs(),
-              ),
-              ElevatedButton(onPressed: _nextLog, child: Text("NEXT"))
-            ],
-          );
-        });
+    return Column(
+      children: [
+        SingleChildScrollView(
+          child: _buildLogs(),
+        ),
+        ElevatedButton(onPressed: _nextLog, child: Text("NEXT"))
+      ],
+    );
   }
 
   Widget _buildLogs() {
@@ -51,27 +54,26 @@ class _BattleRoyaleState extends State<BattleRoyale> {
   void _nextLog() {
     var rng = Random();
     var phraseIndex = rng.nextInt(phrases.length);
-    var aliveIndex = rng.nextInt(aliveUsers.length);
     var infoIndex = rng.nextInt(aliveUsers.length);
     var deadIndex = rng.nextInt(aliveUsers.length);
-    //var resurrectedIndex = rng.nextInt(deadUsers.length);
     var weaponIndex = rng.nextInt(weapons.length);
 
     var phrase = phrases[phraseIndex];
 
-    if (phrase.contains("#ud1")) {
-      phrase = phrase.replaceAll("#ud1", users[deadIndex]);
-      deadUsers.add(users[deadIndex]);
-      aliveUsers.remove(users[deadIndex]);
-    }
     if (phrase.contains("#ui1")) {
-      phrase = phrase.replaceAll("#ui1", users[infoIndex]);
+      phrase = phrase.replaceAll("#ui1", aliveUsers[infoIndex]);
+    }
+    if (phrase.contains("#ud1")) {
+      phrase = phrase.replaceAll("#ud1", aliveUsers[deadIndex]);
+      deadUsers.add(aliveUsers[deadIndex]);
+      aliveUsers.remove(aliveUsers[deadIndex]);
     }
     if (phrase.contains("#w1")) {
       phrase = phrase.replaceAll("#w1", weapons[weaponIndex]);
     }
 
     logs.add(phrase);
+    logs.add("personas vivas: ${aliveUsers.map((e) => e)}");
     setState(() {});
   }
 }
