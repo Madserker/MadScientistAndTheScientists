@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void sendCredentials() {
-    if (key == "choto-papirico658") {
+    if (key == "choto1") {
       Navigator.pushNamed(context, AppNavigatorRoutes.clubDetail,
           arguments: null);
     }
