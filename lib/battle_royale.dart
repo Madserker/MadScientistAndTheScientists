@@ -185,7 +185,7 @@ class _BattleRoyaleState extends State<BattleRoyale> {
         int index = rng.nextInt(aliveUsers.length);
         phrase = phrase.replaceAll("#ui1", aliveUsers[index]);
         if (phrase.contains("#ui2")) {
-          int index2 = rng.nextInt(deadUsers.length);
+          int index2 = rng.nextInt(aliveUsers.length);
           if (index == index2) {
             getPhrase();
           }
