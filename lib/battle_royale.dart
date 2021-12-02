@@ -91,10 +91,12 @@ class _BattleRoyaleState extends State<BattleRoyale> {
   }
 
   void _nextLog() {
-    var phrase = getPhrase();
-    logs.add(phrase);
-    logs.add("personas vivas: ${aliveUsers.map((e) => e)}");
-    setState(() {});
+    if (aliveUsers.length > 1) {
+      var phrase = getPhrase();
+      logs.add(phrase);
+      logs.add("personas vivas: ${aliveUsers.map((e) => e)}");
+      setState(() {});
+    }
   }
 
   String getPhrase() {
