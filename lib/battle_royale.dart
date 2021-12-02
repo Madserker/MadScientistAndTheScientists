@@ -65,7 +65,40 @@ class _BattleRoyaleState extends State<BattleRoyale> {
             ElevatedButton(onPressed: _resetGame, child: Text("RESET"))
           ],
         ),
-      )
+      ),
+      Positioned(
+        top: 30,
+        right: 30,
+        child: Column(
+          children: users.map((e) {
+            if (aliveUsers.contains(e)) {
+              return Image.asset("images/$e.jpg", height: 70);
+            } else {
+              return Container(
+                child: SizedBox(
+                  child: Text(
+                    "DEAD",
+                    style: TextStyle(color: Colors.red, fontSize: 20),
+                  ),
+                  height: 70,
+                  width: 70,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  image: new DecorationImage(
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                        Colors.red.withOpacity(0.7), BlendMode.dstATop),
+                    image: AssetImage(
+                      "images/$e.jpg",
+                    ) as ImageProvider,
+                  ),
+                ),
+              );
+            }
+          }).toList(),
+        ),
+      ),
     ]);
   }
 
