@@ -72,6 +72,7 @@ class _BattleRoyaleState extends State<BattleRoyale> {
   void _resetGame() {
     logs = [];
     aliveUsers = List.from(users);
+    deadUsers = [];
     setState(() {});
   }
 
