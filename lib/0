@@ -1,0 +1,77 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'dart:math';
+
+class BattleRoyale extends StatefulWidget {
+  const BattleRoyale({Key? key}) : super(key: key);
+
+  @override
+  _BattleRoyaleState createState() => _BattleRoyaleState();
+}
+
+class _BattleRoyaleState extends State<BattleRoyale> {
+  CollectionReference clubs = FirebaseFirestore.instance.collection('games');
+  List<String> users = [];
+  List<String> phrases = [];
+  List<String> weapons = [];
+
+  List<String> logs = [];
+  List<String> deadUsers = [];
+  List<String> aliveUsers = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<DocumentSnapshot>(
+        future: clubs.doc("battleroyale").get(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            print(data['users'][0]);
+            users = data['users'];
+            phrases = data['phrases'];
+            weapons = data['weapons'];
+          }
+          return Column(
+            children: [
+              SingleChildScrollView(
+                child: _buildLogs(),
+              ),
+              ElevatedButton(onPressed: _nextLog, child: Text("NEXT"))
+            ],
+          );
+        });
+  }
+
+  Widget _buildLogs() {
+    return Column(children: logs.map((e) => Text(e)).toList());
+  }
+
+  void _nextLog() {
+    var rng = Random();
+    var phraseIndex = rng.nextInt(phrases.length);
+    var aliveIndex = rng.nextInt(aliveUsers.length);
+    var infoIndex = rng.nextInt(aliveUsers.length);
+    var deadIndex = rng.nextInt(aliveUsers.length);
+    var resurrectedIndex = rng.nextInt(deadUsers.length);
+    var weaponIndex = rng.nextInt(weapons.length);
+
+    var phrase = phrases[phraseIndex];
+
+    if (aliveUsers.contains('\$ud1')) {
+      phrase = phrase.replaceAll("\$ud1", users[deadIndex]);
+      deadUsers.add(users[deadIndex]);
+      aliveUsers.remove(users[deadIndex]);
+    }
+    if (aliveUsers.contains('\$ui1')) {
+      phrase = phrase.replaceAll("\$ui1", users[infoIndex]);
+    }
+    if (aliveUsers.contains('\$w1')) {
+      phrase = phrase.replaceAll("\$w2", users[deadIndex]);
+    }
+
+    logs.add(phrases[phraseIndex]);
+    setState((){});
+  }
+}

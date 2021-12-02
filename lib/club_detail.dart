@@ -15,8 +15,6 @@ class _ClubDetailState extends State<ClubDetail> {
   @override
   void initState() {
     super.initState();
-    print("aaaaa");
-    print(clubs);
   }
 
   @override
@@ -54,8 +52,11 @@ class _ClubDetailState extends State<ClubDetail> {
                 height: 50,
               ),
               ElevatedButton(
-                  onPressed: () {},
-                  child: const Text("SEND EMAIL TO OTHER CLAN")),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, AppNavigatorRoutes.battleRoyale);
+                  },
+                  child: const Text("BATTLE ROYALE")),
               const SizedBox(
                 height: 50,
               ),
