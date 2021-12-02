@@ -80,11 +80,8 @@ class _BattleRoyaleState extends State<BattleRoyale> {
     return Column(
         children: logs
             .map((e) => Column(children: [
-                  Text(
-                    e,
-                    style: const TextStyle(fontSize: 25),
-                  ),
-                  SizedBox(
+                  e,
+                  const SizedBox(
                     height: 10,
                   ),
                 ]))
@@ -94,8 +91,14 @@ class _BattleRoyaleState extends State<BattleRoyale> {
   void _nextLog() {
     if (aliveUsers.length > 1) {
       var phrase = getPhrase();
-      logs.add(phrase);
-      logs.add("personas vivas: ${aliveUsers.map((e) => e)}");
+      logs.add(Text(
+        phrase,
+        style: const TextStyle(fontSize: 25),
+      ));
+      logs.add(Text(
+        "personas vivas: ${aliveUsers.map((e) => e)}",
+        style: const TextStyle(fontSize: 15, color: Colors.grey),
+      ));
       setState(() {});
     }
   }
