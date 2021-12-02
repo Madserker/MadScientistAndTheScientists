@@ -43,7 +43,7 @@ class _AppNavigatorState extends State<AppNavigator> {
                 case AppNavigatorRoutes.clubDetail:
                   return const ClubDetail();
                 default:
-                  return const Scaffold();
+                  return const LoginPage();
               }
             });
       },

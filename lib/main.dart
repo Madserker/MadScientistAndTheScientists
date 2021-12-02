@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:madscientistandthescientists/app_navigator.dart';
 import 'package:madscientistandthescientists/login_page.dart';
 
 void main() {
@@ -11,12 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const Scaffold(
-          body: LoginPage(),
-        ));
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(body: AppNavigator()),
+    );
   }
 }

@@ -10,18 +10,15 @@ class ClubDetail extends StatefulWidget {
 class _ClubDetailState extends State<ClubDetail> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          const Text("Bienvenido choto de mierda"),
-          ElevatedButton(
-              onPressed: () {}, child: const Text("GET SOME POINTS YOU LOSER")),
-          ElevatedButton(
-              onPressed: () {}, child: const Text("ENTER THE STORE")),
-          ElevatedButton(
-              onPressed: () {}, child: const Text("SEND EMAIL TO OTHER CLAN")),
-        ],
-      ),
+    return Column(
+      children: [
+        const Text("Bienvenido choto de mierda"),
+        ElevatedButton(
+            onPressed: () {}, child: const Text("GET SOME POINTS YOU LOSER")),
+        ElevatedButton(onPressed: () {}, child: const Text("ENTER THE STORE")),
+        ElevatedButton(
+            onPressed: () {}, child: const Text("SEND EMAIL TO OTHER CLAN")),
+      ],
     );
   }
 }
