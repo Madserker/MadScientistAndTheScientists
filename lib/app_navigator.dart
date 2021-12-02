@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:madscientistandthescientists/club_detail.dart';
 import 'package:madscientistandthescientists/login_page.dart';
+import 'package:madscientistandthescientists/point_farm.dart';
 
 class AppNavigatorRoutes {
   static const String login = "/login";
   static const String clubDetail = "/clubDetail";
+  static const String pointFarm = "/pointFarm";
 }
 
 class AppNavigator extends StatefulWidget {
@@ -42,6 +44,8 @@ class _AppNavigatorState extends State<AppNavigator> {
                   return const LoginPage();
                 case AppNavigatorRoutes.clubDetail:
                   return const ClubDetail();
+                case AppNavigatorRoutes.pointFarm:
+                  return const PointFarm();
                 default:
                   return const LoginPage();
               }

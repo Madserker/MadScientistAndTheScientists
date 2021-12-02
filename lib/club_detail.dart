@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:madscientistandthescientists/app_navigator.dart';
 
 class ClubDetail extends StatefulWidget {
   const ClubDetail({Key? key}) : super(key: key);
@@ -35,14 +36,29 @@ class _ClubDetailState extends State<ClubDetail> {
           return Column(
             children: [
               const Text("Bienvenido choto de mierda"),
+              const SizedBox(
+                height: 50,
+              ),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    print("PUSHING");
+                    Navigator.pushNamed(context, AppNavigatorRoutes.pointFarm);
+                  },
                   child: const Text("GET SOME POINTS YOU LOSER")),
+              const SizedBox(
+                height: 50,
+              ),
               ElevatedButton(
                   onPressed: () {}, child: const Text("ENTER THE STORE")),
+              const SizedBox(
+                height: 50,
+              ),
               ElevatedButton(
                   onPressed: () {},
                   child: const Text("SEND EMAIL TO OTHER CLAN")),
+              const SizedBox(
+                height: 50,
+              ),
               Text("you have $points points"),
               Text("you have 0 cards"),
             ],
