@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:madscientistandthescientists/app_navigator.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -19,10 +20,15 @@ class _LoginPageState extends State<LoginPage> {
             key = item;
           },
         ),
-        TextButton(onPressed: sendCredentials, child: Text("SEND"))
+        TextButton(onPressed: sendCredentials, child: const Text("SEND"))
       ],
     );
   }
 
-  void sendCredentials() {}
+  void sendCredentials() {
+    if (key == "choto-papirico658") {
+      Navigator.pushNamed(context, AppNavigatorRoutes.clubDetail,
+          arguments: null);
+    }
+  }
 }
