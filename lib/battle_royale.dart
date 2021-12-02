@@ -19,6 +19,8 @@ class _BattleRoyaleState extends State<BattleRoyale> {
   List aliveUsers = [];
   List deadUsers = [];
 
+  bool showDeads = true;
+
   ScrollController controller = ScrollController();
 
   Future<void> getData() async {
@@ -54,51 +56,62 @@ class _BattleRoyaleState extends State<BattleRoyale> {
         ),
       ),
       Positioned(
-        left: 30,
-        top: 30,
+        left: 0,
+        top: 0,
         child: Column(
           children: [
             ElevatedButton(onPressed: _nextLog, child: Text("NEXT")),
             SizedBox(
-              height: 20,
+              height: 5,
             ),
-            ElevatedButton(onPressed: _resetGame, child: Text("RESET"))
+            ElevatedButton(onPressed: _resetGame, child: Text("RESET")),
+            SizedBox(
+              height: 5,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  showDeads = !showDeads;
+                  setState(() {});
+                },
+                child: Text("DEADS"))
           ],
         ),
       ),
-      Positioned(
-        top: 30,
-        right: 30,
-        child: Column(
-          children: users.map((e) {
-            if (aliveUsers.contains(e)) {
-              return Image.asset("images/$e.jpg", height: 70);
-            } else {
-              return Container(
-                child: SizedBox(
-                  child: Text(
-                    "DEAD",
-                    style: TextStyle(color: Colors.red, fontSize: 20),
-                  ),
-                  height: 70,
-                  width: 70,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  image: new DecorationImage(
-                    fit: BoxFit.cover,
-                    colorFilter: ColorFilter.mode(
-                        Colors.red.withOpacity(0.7), BlendMode.dstATop),
-                    image: AssetImage(
-                      "images/$e.jpg",
-                    ) as ImageProvider,
-                  ),
-                ),
-              );
-            }
-          }).toList(),
-        ),
-      ),
+      showDeads
+          ? Positioned(
+              top: 30,
+              right: 30,
+              child: Column(
+                children: users.map((e) {
+                  if (aliveUsers.contains(e)) {
+                    return Image.asset("images/$e.jpg", height: 70);
+                  } else {
+                    return Container(
+                      child: SizedBox(
+                        child: Text(
+                          "DEAD",
+                          style: TextStyle(color: Colors.red, fontSize: 20),
+                        ),
+                        height: 70,
+                        width: 70,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        image: new DecorationImage(
+                          fit: BoxFit.cover,
+                          colorFilter: ColorFilter.mode(
+                              Colors.red.withOpacity(0.7), BlendMode.dstATop),
+                          image: AssetImage(
+                            "images/$e.jpg",
+                          ) as ImageProvider,
+                        ),
+                      ),
+                    );
+                  }
+                }).toList(),
+              ),
+            )
+          : Container(),
     ]);
   }
 
