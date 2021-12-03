@@ -44,6 +44,76 @@ class _BattleRoyaleState extends State<BattleRoyale> {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       _scrollToEnd();
     });
+    return Column(
+        mainAxisAlignment:
+            MainAxisAlignment.center, //,Center Column contents vertically,
+        crossAxisAlignment: CrossAxisAlignment.center, //Center
+        children: [
+          Row(
+            mainAxisAlignment:
+                MainAxisAlignment.center, //,Center Column contents vertically,
+            crossAxisAlignment: CrossAxisAlignment.center, //Center
+            children: users.map((e) {
+              if (aliveUsers.contains(e)) {
+                return Image.asset("images/$e.jpg", height: 70);
+              } else {
+                return Container(
+                  child: const SizedBox(
+                    child: Text(
+                      "DEAD",
+                      style: TextStyle(color: Colors.red, fontSize: 20),
+                    ),
+                    height: 70,
+                    width: 70,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                          Colors.red.withOpacity(0.3), BlendMode.dstATop),
+                      image: AssetImage(
+                        "images/$e.jpg",
+                      ),
+                    ),
+                  ),
+                );
+              }
+            }).toList(),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              controller: controller,
+              child: Column(
+                children: [
+                  _buildLogs(),
+                ],
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment:
+                MainAxisAlignment.center, //,Center Column contents vertically,
+            crossAxisAlignment: CrossAxisAlignment.center, //Center
+            children: [
+              ElevatedButton(onPressed: _nextLog, child: Text("NEXT")),
+              SizedBox(
+                width: 5,
+              ),
+              ElevatedButton(onPressed: _resetGame, child: Text("RESET")),
+              SizedBox(
+                width: 5,
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    showDeads = !showDeads;
+                    setState(() {});
+                  },
+                  child: Text("DEADS"))
+            ],
+          ),
+        ]);
+    /*
     return Stack(children: [
       Center(
         child: SingleChildScrollView(
@@ -87,7 +157,7 @@ class _BattleRoyaleState extends State<BattleRoyale> {
                     return Image.asset("images/$e.jpg", height: 70);
                   } else {
                     return Container(
-                      child: SizedBox(
+                      child: const SizedBox(
                         child: Text(
                           "DEAD",
                           style: TextStyle(color: Colors.red, fontSize: 20),
@@ -97,13 +167,13 @@ class _BattleRoyaleState extends State<BattleRoyale> {
                       ),
                       decoration: BoxDecoration(
                         color: Colors.red,
-                        image: new DecorationImage(
+                        image: DecorationImage(
                           fit: BoxFit.cover,
                           colorFilter: ColorFilter.mode(
-                              Colors.red.withOpacity(0.7), BlendMode.dstATop),
+                              Colors.red.withOpacity(0.3), BlendMode.dstATop),
                           image: AssetImage(
                             "images/$e.jpg",
-                          ) as ImageProvider,
+                          ),
                         ),
                       ),
                     );
@@ -112,7 +182,7 @@ class _BattleRoyaleState extends State<BattleRoyale> {
               ),
             )
           : Container(),
-    ]);
+    ]);*/
   }
 
   void _resetGame() {
@@ -179,7 +249,8 @@ class _BattleRoyaleState extends State<BattleRoyale> {
         if (phrase.contains("#ui2")) {
           int index2 = rng.nextInt(aliveUsers.length);
           while (index == index2) {
-            index2 = rng.nextInt(aliveUsers.length);;
+            index2 = rng.nextInt(aliveUsers.length);
+            ;
           }
           phrase = phrase.replaceAll("#ui2", aliveUsers[index2]);
         }
