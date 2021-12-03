@@ -166,23 +166,23 @@ class _BattleRoyaleState extends State<BattleRoyale> {
       phrase = phrase.replaceAll("#w1", weapons[rng.nextInt(weapons.length)]);
       phrase = phrase.replaceAll("#w2", weapons[rng.nextInt(weapons.length)]);
 
-      if (phrase.contains("#ui1")) {
-        int index = rng.nextInt(aliveUsers.length);
-        phrase = phrase.replaceAll("#ui1", aliveUsers[index]);
-        if (phrase.contains("#ui2")) {
-          int index2 = rng.nextInt(aliveUsers.length);
-          if (index == index2) {
-            return getPhrase();
-          }
-          phrase = phrase.replaceAll("#ui2", aliveUsers[index2]);
-        }
-      }
-
       if (phrase.contains("#ud1")) {
         int index = rng.nextInt(aliveUsers.length);
         phrase = phrase.replaceAll("#ud1", aliveUsers[index]);
         deadUsers.add(aliveUsers[index]);
         aliveUsers.remove(aliveUsers[index]);
+      }
+
+      if (phrase.contains("#ui1")) {
+        int index = rng.nextInt(aliveUsers.length);
+        phrase = phrase.replaceAll("#ui1", aliveUsers[index]);
+        if (phrase.contains("#ui2")) {
+          int index2 = rng.nextInt(aliveUsers.length);
+          while (index == index2) {
+            index2 = rng.nextInt(aliveUsers.length);;
+          }
+          phrase = phrase.replaceAll("#ui2", aliveUsers[index2]);
+        }
       }
 
       if (phrase.contains("#ud2")) {
