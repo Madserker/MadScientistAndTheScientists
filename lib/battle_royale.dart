@@ -248,6 +248,13 @@ class _BattleRoyaleState extends State<BattleRoyale> {
         aliveUsers.remove(aliveUsers[index]);
       }
 
+      if (phrase.contains("#ud2")) {
+        int index = rng.nextInt(aliveUsers.length);
+        phrase = phrase.replaceAll("#ud2", aliveUsers[index]);
+        deadUsers.add(aliveUsers[index]);
+        aliveUsers.remove(aliveUsers[index]);
+      }
+
       if (phrase.contains("#ui1")) {
         int index = rng.nextInt(aliveUsers.length);
         phrase = phrase.replaceAll("#ui1", aliveUsers[index]);
@@ -259,13 +266,6 @@ class _BattleRoyaleState extends State<BattleRoyale> {
           }
           phrase = phrase.replaceAll("#ui2", aliveUsers[index2]);
         }
-      }
-
-      if (phrase.contains("#ud2")) {
-        int index = rng.nextInt(aliveUsers.length);
-        phrase = phrase.replaceAll("#ud2", aliveUsers[index]);
-        deadUsers.add(aliveUsers[index]);
-        aliveUsers.remove(aliveUsers[index]);
       }
 
       if (phrase.contains("#ur1")) {
