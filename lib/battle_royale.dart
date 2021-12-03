@@ -233,9 +233,18 @@ class _BattleRoyaleState extends State<BattleRoyale> {
       return getPhrase();
     } else if (deadUsers.length < 2 && phrases[phraseIndex].contains("#ur2")) {
       return getPhrase();
-    } else if (aliveUsers.length < 2 && phrases[phraseIndex].contains("#ui2")) {
+    } else if (aliveUsers.length < 1 && phrases[phraseIndex].contains("#ui2")) {
       return getPhrase();
-    } else if (aliveUsers.length < 2 && phrases[phraseIndex].contains("#ud2")) {
+    } else if (aliveUsers.length < 3 &&
+        phrases[phraseIndex].contains("#ud2") &&
+        phrases[phraseIndex].contains("#ui2")) {
+      return getPhrase();
+    } else if (aliveUsers.length < 2 &&
+        phrases[phraseIndex].contains("#ud2") &&
+        phrases[phraseIndex].contains("#ui1") &&
+        !phrases[phraseIndex].contains("#ui2")) {
+      return getPhrase();
+    } else if (aliveUsers.length < 1 && phrases[phraseIndex].contains("#ud2")) {
       return getPhrase();
     } else {
       phrase = phrase.replaceAll("#w1", weapons[rng.nextInt(weapons.length)]);
