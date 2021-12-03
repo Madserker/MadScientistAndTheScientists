@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 import 'package:flutter/rendering.dart';
+import 'package:madscientistandthescientists/models/battle_royale_user.dart';
 
 class BattleRoyale extends StatefulWidget {
   const BattleRoyale({Key? key}) : super(key: key);
@@ -28,7 +29,10 @@ class _BattleRoyaleState extends State<BattleRoyale> {
   Future<void> getData() async {
     var snap = await clubs.doc("battleroyale").get();
     Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-    users = data['users'];
+
+    for (String user in data['users']) {
+      users.add(BattleRoyaleUser(name: user));
+    }
     aliveUsers = List.from(users);
     phrases = data['phrases'];
     weapons = data['weapons'];
@@ -118,76 +122,6 @@ class _BattleRoyaleState extends State<BattleRoyale> {
             ],
           ),
         ]);
-    /*
-    return Stack(children: [
-      Center(
-        child: SingleChildScrollView(
-          controller: controller,
-          child: Column(
-            children: [
-              _buildLogs(),
-            ],
-          ),
-        ),
-      ),
-      Positioned(
-        left: 0,
-        top: 0,
-        child: Column(
-          children: [
-            ElevatedButton(onPressed: _nextLog, child: Text("NEXT")),
-            SizedBox(
-              height: 5,
-            ),
-            ElevatedButton(onPressed: _resetGame, child: Text("RESET")),
-            SizedBox(
-              height: 5,
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  showDeads = !showDeads;
-                  setState(() {});
-                },
-                child: Text("DEADS"))
-          ],
-        ),
-      ),
-      showDeads
-          ? Positioned(
-              top: 30,
-              right: 30,
-              child: Column(
-                children: users.map((e) {
-                  if (aliveUsers.contains(e)) {
-                    return Image.asset("images/$e.jpg", height: 70);
-                  } else {
-                    return Container(
-                      child: const SizedBox(
-                        child: Text(
-                          "DEAD",
-                          style: TextStyle(color: Colors.red, fontSize: 20),
-                        ),
-                        height: 70,
-                        width: 70,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          colorFilter: ColorFilter.mode(
-                              Colors.red.withOpacity(0.3), BlendMode.dstATop),
-                          image: AssetImage(
-                            "images/$e.jpg",
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                }).toList(),
-              ),
-            )
-          : Container(),
-    ]);*/
   }
 
   void _resetGame() {
@@ -241,12 +175,7 @@ class _BattleRoyaleState extends State<BattleRoyale> {
       phrase = phrase.replaceAll("#w1", weapons[rng.nextInt(weapons.length)]);
       phrase = phrase.replaceAll("#w2", weapons[rng.nextInt(weapons.length)]);
 
-      if (phrase.contains("#ud1")) {
-        int index = rng.nextInt(aliveUsers.length);
-        phrase = phrase.replaceAll("#ud1", aliveUsers[index]);
-        deadUsers.add(aliveUsers[index]);
-        aliveUsers.remove(aliveUsers[index]);
-      }
+      phrase = killUser(phrase);
 
       if (phrase.contains("#ui1")) {
         int index = rng.nextInt(aliveUsers.length);
@@ -255,34 +184,101 @@ class _BattleRoyaleState extends State<BattleRoyale> {
           int index2 = rng.nextInt(aliveUsers.length);
           while (index == index2) {
             index2 = rng.nextInt(aliveUsers.length);
-            ;
           }
           phrase = phrase.replaceAll("#ui2", aliveUsers[index2]);
         }
       }
 
-      if (phrase.contains("#ud2")) {
-        int index = rng.nextInt(aliveUsers.length);
-        phrase = phrase.replaceAll("#ud2", aliveUsers[index]);
-        deadUsers.add(aliveUsers[index]);
-        aliveUsers.remove(aliveUsers[index]);
-      }
+      phrase = resurrectUser(phrase);
 
-      if (phrase.contains("#ur1")) {
-        int index = rng.nextInt(deadUsers.length);
-        phrase = phrase.replaceAll("#ur1", deadUsers[index]);
-        aliveUsers.add(deadUsers[index]);
-        deadUsers.remove(deadUsers[index]);
-      }
-
-      if (phrase.contains("#ur2")) {
-        int index = rng.nextInt(deadUsers.length);
-        phrase = phrase.replaceAll("#ur2", deadUsers[index]);
-        aliveUsers.add(deadUsers[index]);
-        deadUsers.remove(deadUsers[index]);
-      }
       return phrase;
     }
+  }
+
+  String killUser(String phrase) {
+    var rng = Random();
+
+    if (phrase.contains("#ud1") && phrase.contains("#ui1")) {
+      List<int> probs = [];
+      int userIndex = 0;
+      for (BattleRoyaleUser user in aliveUsers) {
+        for (int i = 0; i <= user.attack; i++) {
+          probs.add(userIndex);
+        }
+        userIndex++;
+      }
+
+      int index = rng.nextInt(probs.length);
+      phrase = phrase.replaceAll("#ui1", aliveUsers[probs[index]].name);
+
+      List<int> probs2 = [];
+      int userIndex2 = 0;
+      for (BattleRoyaleUser user in aliveUsers) {
+        for (int i = 0; i <= user.defense; i++) {
+          if (user != aliveUsers[probs[index]]) {
+            probs.add(userIndex2);
+          }
+        }
+        userIndex2++;
+      }
+
+      int index2 = rng.nextInt(probs2.length);
+      phrase = phrase.replaceAll("#ud1", aliveUsers[probs2[index2]].name);
+      deadUsers.add(aliveUsers[probs2[index2]]);
+      aliveUsers.remove(aliveUsers[probs2[index2]]);
+    }
+
+    if (phrase.contains("#ud1")) {
+      int index = rng.nextInt(aliveUsers.length);
+      phrase = phrase.replaceAll("#ud1", aliveUsers[index]);
+      deadUsers.add(aliveUsers[index]);
+      aliveUsers.remove(aliveUsers[index]);
+    }
+
+    if (phrase.contains("#ud2")) {
+      int index = rng.nextInt(aliveUsers.length);
+      phrase = phrase.replaceAll("#ud2", aliveUsers[index]);
+      deadUsers.add(aliveUsers[index]);
+      aliveUsers.remove(aliveUsers[index]);
+    }
+    return phrase;
+  }
+
+  String resurrectUser(String phrase) {
+    var rng = Random();
+
+    if (phrase.contains("#ur1")) {
+      List<int> probs = [];
+      int userIndex = 0;
+      for (BattleRoyaleUser user in deadUsers) {
+        for (int i = 0; i <= user.luck; i++) {
+          probs.add(userIndex);
+        }
+        userIndex++;
+      }
+
+      int index = rng.nextInt(probs.length);
+      phrase = phrase.replaceAll("#ur1", deadUsers[probs[index]].name);
+      aliveUsers.add(deadUsers[index]);
+      deadUsers.remove(deadUsers[index]);
+    }
+
+    if (phrase.contains("#ur2")) {
+      List<int> probs = [];
+      int userIndex = 0;
+      for (BattleRoyaleUser user in deadUsers) {
+        for (int i = 0; i <= user.luck; i++) {
+          probs.add(userIndex);
+        }
+        userIndex++;
+      }
+
+      int index = rng.nextInt(probs.length);
+      phrase = phrase.replaceAll("#ur2", deadUsers[probs[index]].name);
+      aliveUsers.add(deadUsers[index]);
+      deadUsers.remove(deadUsers[index]);
+    }
+    return phrase;
   }
 
   void _scrollToEnd() async {
