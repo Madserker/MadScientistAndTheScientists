@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:flutter/rendering.dart';
+
 class BattleRoyale extends StatefulWidget {
   const BattleRoyale({Key? key}) : super(key: key);
 
@@ -49,37 +51,40 @@ class _BattleRoyaleState extends State<BattleRoyale> {
             MainAxisAlignment.center, //,Center Column contents vertically,
         crossAxisAlignment: CrossAxisAlignment.center, //Center
         children: [
-          Row(
-            mainAxisAlignment:
-                MainAxisAlignment.center, //,Center Column contents vertically,
-            crossAxisAlignment: CrossAxisAlignment.center, //Center
-            children: users.map((e) {
-              if (aliveUsers.contains(e)) {
-                return Image.asset("images/$e.jpg", height: 70);
-              } else {
-                return Container(
-                  child: const SizedBox(
-                    child: Text(
-                      "DEAD",
-                      style: TextStyle(color: Colors.red, fontSize: 20),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment
+                  .center, //,Center Column contents vertically,
+              crossAxisAlignment: CrossAxisAlignment.center, //Center
+              children: users.map((e) {
+                if (aliveUsers.contains(e)) {
+                  return Image.asset("images/$e.jpg", height: 70);
+                } else {
+                  return Container(
+                    child: const SizedBox(
+                      child: Text(
+                        "DEAD",
+                        style: TextStyle(color: Colors.red, fontSize: 20),
+                      ),
+                      height: 70,
+                      width: 70,
                     ),
-                    height: 70,
-                    width: 70,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      colorFilter: ColorFilter.mode(
-                          Colors.red.withOpacity(0.3), BlendMode.dstATop),
-                      image: AssetImage(
-                        "images/$e.jpg",
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        colorFilter: ColorFilter.mode(
+                            Colors.red.withOpacity(0.3), BlendMode.dstATop),
+                        image: AssetImage(
+                          "images/$e.jpg",
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }
-            }).toList(),
+                  );
+                }
+              }).toList(),
+            ),
           ),
           Expanded(
             child: SingleChildScrollView(
