@@ -24,7 +24,6 @@ GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
 
 class _AppNavigatorState extends State<AppNavigator> {
   bool? onBoardingShown;
-
   @override
   void initState() {
     super.initState();
